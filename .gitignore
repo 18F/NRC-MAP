@@ -1,2 +1,6 @@
 .DS_Store
 /todo.txt
+data
+*.pyc
+__pycache__
+*.twbr
