@@ -9,9 +9,27 @@ This script currently generates data for the following dashboard sections:
 """
 __version__ = "0.1.1"
 
+import logging
+import sys
+from argparse import ArgumentParser, ArgumentError
 from datetime import date, timedelta
 from faker import Faker
 from common.faker_providers import ITAAC
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(filename)s: %(asctime)s: %(levelname)s: %(message)s'
+)
+
+ARG_PARSER = ArgumentParser()
+ARG_PARSER.add_argument('-d',
+                        dest='directory',
+                        type=str,
+                        help='Set directory for synthetic data files.'
+                        ' e.g. `./data/`')
+ARG_PARSER.add_argument('--version',
+                        action='version',
+                        version='%(prog)s v{}'.format(__version__))
 
 
 class VogtleDataGenerator(object):
@@ -20,11 +38,18 @@ class VogtleDataGenerator(object):
     for Vogtle Dashboard Synthetic data
     """
     fake = None
-    directory = 'tests/generator/data'
+    directory = None
 
-    def __init__(self):
+    def __init__(self, directory=None):
+        if not directory:
+            logging.error("No directory provided, exiting..")
+            sys.exit(1)
+
         self.fake = Faker()
         self.fake.add_provider(ITAAC)
+
+        if directory:
+            self.directory = directory
 
     def generate_default(self):
         """
@@ -42,7 +67,7 @@ class VogtleDataGenerator(object):
         header = "id|itaac_status|icn_status|effort_required|facility|" \
                  "targeted_flag|target_amt\n"
 
-        with open('{}/inspections.csv'
+        with open('{}inspections.csv'
                   .format(self.directory), 'w') as output_file:
 
             output_file.write(header)
@@ -69,7 +94,7 @@ class VogtleDataGenerator(object):
         """
         header = "id|title|text|datetime|source_url\n"
 
-        with open('{}/news_feed.csv'.format(self.directory), 'w') \
+        with open('{}news_feed.csv'.format(self.directory), 'w') \
                 as output_file:
 
             output_file.write(header)
@@ -104,7 +129,7 @@ class VogtleDataGenerator(object):
         """
         header = "id|purpose|date|time|location|contact\n"
 
-        with open('{}/public_meetings.csv'.format(self.directory), 'w') \
+        with open('{}public_meetings.csv'.format(self.directory), 'w') \
                 as output_file:
 
             output_file.write(header)
@@ -136,14 +161,14 @@ class VogtleDataGenerator(object):
         Generate Calendar
 
         """
-        header = "id|date\n" 
+        header = "id|date\n"
 
         sdate = date(start_year, 1, 1)   # start date
         edate = date(end_year, 12, 31)   # end date
 
         delta = edate - sdate       # as timedelta
 
-        with open('{}/calendar.csv'.format(self.directory), 'w') \
+        with open('{}calendar.csv'.format(self.directory), 'w') \
                 as output_file:
 
             output_file.write(header)
@@ -153,5 +178,20 @@ class VogtleDataGenerator(object):
 
 
 if __name__ == '__main__':
-    VOGTLE_GENERATOR = VogtleDataGenerator()
+    logging.info("Generating synthetic data...")
+    if not sys.argv[1:]:
+        ARG_PARSER.print_help()
+        # parser.print_usage() # for just the usage line
+        ARG_PARSER.exit()
+
+    OPTIONS = {}
+    try:
+        OPTIONS = ARG_PARSER.parse_args()
+    except ArgumentError as err:
+        ARG_PARSER.print_help()
+        ARG_PARSER.exit()
+
+    VOGTLE_GENERATOR = VogtleDataGenerator(directory=OPTIONS.directory)
     VOGTLE_GENERATOR.generate_default()
+
+    logging.info("Synthetic data generation complete")
