@@ -25,7 +25,7 @@ The current features of this repo include:
 |-- tests                                       # Test related scripts and data
 |   |-- generator                               # Synthetic data generator files
 |-- deploy                                      # Items to be deployed to Docker containers
-|   |-- dashboards                     # Tableau Dashboards
+|   |-- dashboards                              # Tableau Dashboards
 |-- development                                 # Development environment related files
 |-- generate_test_data.sh
 |-- CONTRIBUTING.md
