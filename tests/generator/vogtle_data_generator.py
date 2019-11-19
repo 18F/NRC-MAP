@@ -7,7 +7,7 @@ This script currently generates data for the following dashboard sections:
 - General Calendar
 
 """
-__version__ = "0.1.1"
+__version__ = "0.1.0"
 
 import logging
 import sys
@@ -79,14 +79,14 @@ class VogtleDataGenerator(object):
                 targeted_flag = self.fake.format('true_false_flag')
                 target_amt = self.fake.format('target_amt')
 
-                output_file.write("{}|{}|{}|{}|{}|{}|{}\n"
-                                  .format(itaac_id,
-                                          itaac_status,
-                                          icn_status,
-                                          effort_required,
-                                          facility,
-                                          targeted_flag,
-                                          target_amt))
+                output_file.write("%s|%s|%s|%s|%s|%s|%s\n" %
+                                  (itaac_id,
+                                   itaac_status,
+                                   icn_status,
+                                   effort_required,
+                                   facility,
+                                   targeted_flag,
+                                   target_amt))
 
     def generate_news_feed(self, rows):
         """
@@ -115,12 +115,12 @@ class VogtleDataGenerator(object):
                 source_url = "http://www.{}.com/{}".format(
                     self.fake.format('word'), self.fake.format('word'))
 
-                output_file.write("{}|{}|{}|{}|{}\n"
-                                  .format(feed_id,
-                                          title,
-                                          text,
-                                          datetime,
-                                          source_url))
+                output_file.write("%s|%s|%s|%s|%s\n" %
+                                  (feed_id,
+                                   title,
+                                   text,
+                                   datetime,
+                                   source_url))
 
     def generate_public_meetings(self, rows):
         """
@@ -148,13 +148,13 @@ class VogtleDataGenerator(object):
                     self.fake.format('name'),
                     self.fake.format('phone_number'))
 
-                output_file.write("{}|{}|{}|{}|{}|{}\n"
-                                  .format(meeting_id,
-                                          purpose,
-                                          meeting_date,
-                                          time,
-                                          location,
-                                          contact))
+                output_file.write("%s|%s|%s|%s|%s|%s\n" %
+                                  (meeting_id,
+                                   purpose,
+                                   meeting_date,
+                                   time,
+                                   location,
+                                   contact))
 
     def generate_calendar(self, start_year, end_year):
         """
@@ -174,7 +174,7 @@ class VogtleDataGenerator(object):
             output_file.write(header)
             for i in range(delta.days + 1):
                 day = sdate + timedelta(days=i)
-                output_file.write("{}|{}\n".format(i, day))
+                output_file.write("%s|%s\n" % (i, day))
 
 
 if __name__ == '__main__':
