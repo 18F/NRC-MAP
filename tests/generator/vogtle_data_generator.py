@@ -181,7 +181,6 @@ if __name__ == '__main__':
     logging.info("Generating synthetic data...")
     if not sys.argv[1:]:
         ARG_PARSER.print_help()
-        # parser.print_usage() # for just the usage line
         ARG_PARSER.exit()
 
     OPTIONS = {}
