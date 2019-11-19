@@ -7,14 +7,14 @@ This script currently generates data for the following dashboard sections:
 - General Calendar
 
 """
-__version__ = "0.1.0"
-
 import logging
 import sys
 from argparse import ArgumentParser, ArgumentError
 from datetime import date, timedelta
 from faker import Faker
 from common.faker_providers import ITAAC
+
+__version__ = "0.1.0"
 
 logging.basicConfig(
     level=logging.INFO,
