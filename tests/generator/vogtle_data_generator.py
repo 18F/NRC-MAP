@@ -29,7 +29,7 @@ ARG_PARSER.add_argument('-d',
                         ' e.g. `./data/`')
 ARG_PARSER.add_argument('--version',
                         action='version',
-                        version='%(prog)s v{}'.format(__version__))
+                        version="%(prog)s v" + __version__)
 
 
 class VogtleDataGenerator(object):
